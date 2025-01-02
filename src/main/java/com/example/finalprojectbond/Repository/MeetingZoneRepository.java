@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MeetingZoneRepository extends JpaRepository<MeetingZone, Integer> {
+    MeetingZone findMeetingZoneById(Integer id);
+    MeetingZone findMeetingZoneByExperienceId(Integer experienceId);
 }

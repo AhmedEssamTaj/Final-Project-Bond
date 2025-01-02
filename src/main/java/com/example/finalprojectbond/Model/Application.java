@@ -33,7 +33,7 @@ public class Application {
     @Size(max = 10,message = "The length of the status must be at most 10 characters")
     @Column(columnDefinition = "varchar(20)") // the default is in-complete
     @Pattern(regexp = "^(Accepted|In-Progress|Rejected)$",message = "The status must be Accepted, In-Progress or Rejected")
-    private String status;
+    private String status = "In-Progress";
 
     @ManyToOne
     @JsonIgnore

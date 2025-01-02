@@ -43,4 +43,9 @@ public class Organizer {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "organizer")
     private Set<Experience> experiences = new HashSet<>();
+
+    public Organizer(@Size(max = 255,message = "The length of the user profile summary must be at most 255 characters") @NotEmpty(message = "User Profile Summary cannot be null") String userProfileSummary, @Size(max = 20,message = "The length of the license serial number must be at most 20 characters") @NotEmpty(message = "license serial number cannot be null") String licenseSerialNumber) {
+        this.userProfileSummary = userProfileSummary;
+        this.licenseSerialNumber = licenseSerialNumber;
+    }
 }

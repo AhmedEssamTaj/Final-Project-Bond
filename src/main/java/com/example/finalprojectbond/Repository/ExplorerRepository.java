@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ExplorerRepository extends JpaRepository<Explorer, Integer> {
+    Explorer findExplorerById(Integer id);
 }
