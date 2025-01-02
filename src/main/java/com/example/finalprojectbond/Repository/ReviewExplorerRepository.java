@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReviewExplorerRepository extends JpaRepository<ReviewExplorer, Integer> {
+
+    ReviewExplorer findReviewExplorerById(Integer id);
 }

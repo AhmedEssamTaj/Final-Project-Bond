@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReviewExperienceRepository extends JpaRepository<ReviewExperience, Integer> {
+
+    ReviewExperience findReviewExperienceById(Integer Id);
+
+
 }
