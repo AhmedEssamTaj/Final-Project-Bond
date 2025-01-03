@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrganizerRepository extends JpaRepository<Organizer, Integer> {
+    Organizer findOrganizerById(Integer id);
+
 }
