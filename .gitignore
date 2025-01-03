@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Ignore Firebase service account key file
+firebase-service-key.json
+
 ### STS ###
 .apt_generated
 .classpath
