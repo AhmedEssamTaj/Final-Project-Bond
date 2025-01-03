@@ -49,6 +49,7 @@ public class Experience {
     private String difficulty;
 
     @Column(columnDefinition = "varchar(6) not null")
+    @Pattern(regexp = "^(MALE|FEMALE|FAMILY)$")
     private String audienceType;
 
     @ManyToOne

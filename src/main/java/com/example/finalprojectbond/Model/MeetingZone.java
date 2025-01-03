@@ -27,7 +27,7 @@ public class MeetingZone {
     @Column(columnDefinition = "Double not null")
     private Double longitude;
 
-    @Size(max = 255, message = "The length of the land mark must be at most 255 characters")
+    @Size(max = 255, message = "The length of the landmark must be at most 255 characters")
     @NotEmpty(message = "Land Mark cannot be empty")
     @Column(columnDefinition = "varchar(255) not null")
     private String landMark;
@@ -36,4 +36,10 @@ public class MeetingZone {
     @MapsId
     @JsonIgnore
     private Experience experience;
+
+    public MeetingZone(@Positive(message = "Latitude cannot be null") Double latitude, @Positive(message = "longitude cannot be null") Double longitude, @Size(max = 255, message = "The length of the landmark must be at most 255 characters") @NotEmpty(message = "Land Mark cannot be empty") String landMark) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.landMark = landMark;
+    }
 }

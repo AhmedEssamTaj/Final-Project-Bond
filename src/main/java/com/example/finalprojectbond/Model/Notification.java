@@ -2,11 +2,14 @@ package com.example.finalprojectbond.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,9 +29,10 @@ public class Notification {
     private String message;
 
     @Column(nullable = false)
-    private String notification_ToUser;
+    private String title;
 
-    private LocalDateTime notification_createAt;
+    @Column()
+    private LocalDate notification_createAt = LocalDate.now();
 
     @ManyToOne
     @JsonIgnore
@@ -37,4 +41,9 @@ public class Notification {
     @ManyToOne
     @JsonIgnore
     private Experience experience;
+
+    public Notification(String message, @Size(max = 50, message = "Title must be at most 50 characters") @NotEmpty(message = "Title cannot be empty") String title) {
+        this.message = message;
+        this.title = title;
+    }
 }
