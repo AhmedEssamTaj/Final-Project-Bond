@@ -14,7 +14,9 @@ public class NotificationOutDTO {
 
     private String message;
 
-    private String notification_ToUser;
+    private String title;
 
     private LocalDate notification_createAt;
+
+    private String titleExperience;
 }

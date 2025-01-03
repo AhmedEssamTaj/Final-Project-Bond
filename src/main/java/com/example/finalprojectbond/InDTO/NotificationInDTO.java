@@ -13,5 +13,5 @@ import java.time.LocalDate;
 public class NotificationInDTO {
     private String message;
 
-    private String notification_ToUser;
+    private String title;
 }

@@ -55,13 +55,17 @@ public class ApplicationService {
         if (experience == null) {
             throw new ApiException("Experience not found");
         }
-        Application application = new Application();
-        application.setDescription(applicationInDTO.getDescription());
-        application.setTools(applicationInDTO.getTools());
-        application.setExperience(experience);
-        application.setExplorer(explorer);
-        application.setStatus("Pending");
-        applicationRepository.save(application);
+        if (applicationRepository.findApplicationByExperienceAndExplorer(experience, explorer) == null) {
+            Application application = new Application();
+            application.setDescription(applicationInDTO.getDescription());
+            application.setTools(applicationInDTO.getTools());
+            application.setExperience(experience);
+            application.setExplorer(explorer);
+            application.setStatus("Pending");
+            applicationRepository.save(application);
+        }else {
+            throw new ApiException("Application already exit");
+        }
     }
 
     public void updateApplication(Integer explorerId,Integer experienceId,Integer applicationId,ApplicationInDTO applicationInDTO) {
@@ -77,17 +81,15 @@ public class ApplicationService {
         if (application == null) {
             throw new ApiException("Application not found");
         }
-        if (application.getExperience().equals(experience)) {
-            if (application.getExplorer().equals(explorer)) {
-                application.setDescription(applicationInDTO.getDescription());
-                application.setTools(applicationInDTO.getTools());
-                applicationRepository.save(application);
-            }else {
-                throw new ApiException("Explorer does not have this application");
-            }
-        }else {
+        if (!application.getExperience().equals(experience)) {
             throw new ApiException("Explorer does not have this Application");
         }
+        if (!application.getExplorer().equals(explorer)) {
+            throw new ApiException("Explorer does not have this application");
+        }
+        application.setDescription(applicationInDTO.getDescription());
+        application.setTools(applicationInDTO.getTools());
+        applicationRepository.save(application);
     }
 
     public void cancelApplication(Integer explorerId,Integer experienceId,Integer applicationId) {
@@ -103,13 +105,14 @@ public class ApplicationService {
         if (application == null) {
             throw new ApiException("Application not found");
         }
-        if (application.getExperience().equals(experience)) {
-            if(application.getExplorer().equals(explorer)) {
-                applicationRepository.delete(application);
-            }
-        }else {
+        if (!application.getExperience().equals(experience)) {
+            throw new ApiException("experience does not have this Application");
+        }
+        if(!application.getExplorer().equals(explorer)) {
             throw new ApiException("Explorer does not have this Application");
         }
+        applicationRepository.delete(application);
+
     }
 
     public void rejectApplication(Integer organizerId,Integer explorerId,Integer applicationId) {
@@ -130,20 +133,18 @@ public class ApplicationService {
             throw new ApiException("Experience not found");
         }
 
-        if (experience.getOrganizer().equals(organizer)) {
-            if (experience.getStatus().equalsIgnoreCase("Accept Application")) {
-                if (application.getExplorer().equals(explorer)) {
-                    application.setStatus("Rejected");
-                    applicationRepository.save(application);
-                }else {
-                    throw new ApiException("Explorer does not have this Application");
-                }
-            }else{
-                throw new ApiException("the status should be Accept Application");
-            }
-        }else{
+        if (!experience.getOrganizer().equals(organizer)) {
             throw new ApiException("Organizer does not have this experience");
         }
+        if (!experience.getStatus().equalsIgnoreCase("Accept Application")) {
+            throw new ApiException("the status of experience should be Accept Application");
+        }
+        if (!application.getExplorer().equals(explorer)) {
+            throw new ApiException("Explorer does not have this Application");
+        }
+        application.setStatus("Rejected");
+        applicationRepository.save(application);
+
     }
 
     public void acceptApplication(Integer organizerId,Integer explorerId,Integer applicationId) {
@@ -163,27 +164,27 @@ public class ApplicationService {
         if (experience == null) {
             throw new ApiException("Experience not found");
         }
-        if (experience.getOrganizer().equals(organizer)) {
-            if (experience.getStatus().equalsIgnoreCase("Accept Application")) {
-                if (application.getExplorer().equals(explorer)) {
-                    if (experience.getAudienceType().equalsIgnoreCase("FAMILY")){
-                        application.setStatus("Accepted");
-                        applicationRepository.save(application);
-                    }
-                    else if (application.getExplorer().getMyUser().getGender().equalsIgnoreCase(experience.getAudienceType())) {
-                        application.setStatus("Accepted");
-                        applicationRepository.save(application);
-                    }else {
-                        throw new ApiException("Cannot accept this explorer because his gender does not match the gender required in the experience");
-                    }
-                }else {
-                    throw new ApiException("Explorer does not have this Application");
-                }
-            }else{
-                throw new ApiException("the status should be Accept Application");
-            }
-        }else{
+
+        if (!experience.getOrganizer().equals(organizer)) {
             throw new ApiException("Organizer does not have this experience");
+        }
+
+        if (!experience.getStatus().equalsIgnoreCase("Accept Application")) {
+            throw new ApiException("the status of experience should be Accept Application");
+        }
+
+        if (!application.getExplorer().equals(explorer)) {
+            throw new ApiException("Explorer does not have this Application");
+        }
+
+        if (experience.getAudienceType().equalsIgnoreCase("FAMILY")) {
+            application.setStatus("Accepted");
+            applicationRepository.save(application);
+        } else if (application.getExplorer().getMyUser().getGender().equalsIgnoreCase(experience.getAudienceType())) {
+            application.setStatus("Accepted");
+            applicationRepository.save(application);
+        }else {
+            throw new ApiException("Cannot accept this explorer because his gender does not match the gender required in the experience");
         }
 
     }

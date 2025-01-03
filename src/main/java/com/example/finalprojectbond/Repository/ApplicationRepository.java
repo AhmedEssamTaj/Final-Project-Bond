@@ -15,4 +15,6 @@ public interface ApplicationRepository extends JpaRepository<Application, Intege
     List<Application> findAllByExperience(Experience experience);
 
     List<Application> findAllByExperienceTitleContainingIgnoreCaseAndExplorer(String title, Explorer explorer);
+
+    Application findApplicationByExperienceAndExplorer(Experience experience, Explorer explorer);
 }
