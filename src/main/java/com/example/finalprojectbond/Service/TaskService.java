@@ -3,6 +3,7 @@ package com.example.finalprojectbond.Service;
 import com.example.finalprojectbond.Api.ApiException;
 import com.example.finalprojectbond.InDTO.TaskInDTO;
 import com.example.finalprojectbond.Model.*;
+import com.example.finalprojectbond.OutDTO.BriefExplorerOutDTO;
 import com.example.finalprojectbond.OutDTO.ExplorerOutDTO;
 import com.example.finalprojectbond.OutDTO.TaskOutDTO;
 import com.example.finalprojectbond.Repository.*;
@@ -154,8 +155,8 @@ public class TaskService {
         taskRepository.save(task);
     }
 
-    //3
-    public List<ExplorerOutDTO> viewTaskProgressForAllExplorers(Integer organizerId) {
+    //3  -----------------------  NEEDS REVIEW ---------------------------------------------
+    public List<BriefExplorerOutDTO> viewTaskProgressForAllExplorers(Integer organizerId) {
         Organizer organizer = organizerRepository.findOrganizerById(organizerId);
         if (organizer == null || !organizer.getMyUser().getRole().equals("ORGANIZER")) {
             throw new ApiException("You don't have permission to view task progress");
@@ -166,7 +167,7 @@ public class TaskService {
             throw new ApiException("No explorers found");
         }
 
-        List<ExplorerOutDTO> progressList = new ArrayList<>();
+        List<BriefExplorerOutDTO> progressList = new ArrayList<>();
         for (Explorer explorer : explorers) {
             List<Task> tasks = taskRepository.findTasksByExplorer(explorer);
             int totalTasks = tasks.size();
@@ -178,9 +179,9 @@ public class TaskService {
                 }
             }
 
-            ExplorerOutDTO explorerOutDTO = new ExplorerOutDTO(explorer.getMyUser().getUsername(), explorer.getMyUser().getAge(), explorer.getMyUser().getEmail(),
-                    explorer.getMyUser().getGender(), explorer.getMyUser().getPhoneNumber());
-            progressList.add(explorerOutDTO);
+            BriefExplorerOutDTO briefExplorerOutDTO = new BriefExplorerOutDTO(explorer.getMyUser().getName(), explorer.getMyUser().getAge(), explorer.getMyUser().getHealthStatus(),
+                    explorer.getMyUser().getGender(), explorer.getMyUser().getPhotoURL());
+            progressList.add(briefExplorerOutDTO);
         }
 
         return progressList;

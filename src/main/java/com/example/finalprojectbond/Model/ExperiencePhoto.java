@@ -18,7 +18,7 @@ public class ExperiencePhoto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Size(max = 150, message = "Photo URL must be at most 150 characters")
+    @Column(columnDefinition = "varchar(500)")
     private String photoUrl;
 
     @ManyToOne
