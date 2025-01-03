@@ -1,16 +1,17 @@
 package com.example.finalprojectbond.OutDTO;
 
+import com.example.finalprojectbond.Model.ExperiencePhoto;
 import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @Setter
@@ -18,18 +19,13 @@ import java.time.LocalDate;
 public class ExperienceOutDTO {
 
     private String title;
-
     private String description;
-
     private String city;
-
     private String status;
-
     private LocalDate startDate;
-
     private LocalDate endDate;
-
-    private LocalDate createdAt;
-
     private String difficulty;
+    private String audienceType;
+    private List<ExperiencePhotoOutDTO> photos;
+
 }

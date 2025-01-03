@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Setter
 @Getter
@@ -28,6 +30,10 @@ public class ReviewExplorer {
     @Max(value = 5, message = "Rating cannot be more than 5 ")
     @Column(columnDefinition = "int not null")
     private Integer rating;
+
+    @Column
+    private LocalDateTime createdAt = LocalDateTime.now();
+
 
     @ManyToOne
     @JsonIgnore

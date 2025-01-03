@@ -45,7 +45,7 @@ public class OrganizerOutDTO {
 
     private String licenseSerialNumber;
 
-    private Integer rating;
+    private double rating;
 
     private Boolean isApproved;
 

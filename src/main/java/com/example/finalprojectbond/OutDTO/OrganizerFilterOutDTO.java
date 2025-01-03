@@ -21,5 +21,5 @@ public class OrganizerFilterOutDTO {
 
     private String userProfileSummary;
 
-    private Integer rating;
+    private double rating;
 }

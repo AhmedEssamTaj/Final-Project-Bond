@@ -25,6 +25,8 @@ public class OrganizerService {
     private final OrganizerRepository organizerRepository;
     private final AuthRepository authRepository;
     private final ExperienceRepository experienceRepository;
+    private final ExperienceService experienceService;
+
 
 
     public OrganizerOutDTO getMyOrganizer(Integer organizerId){
@@ -117,17 +119,18 @@ public class OrganizerService {
             throw new ApiException("Organizer not found");
         }
         List<Experience> experiences = experienceRepository.findAllByOrganizer(organizer);
-        return changeExperienceToOutDTO(experiences);
+//        return changeExperienceToOutDTO(experiences);
+        return experienceService.convertToOutDTO(experiences);
     }
 
-    public List<ExperienceOutDTO> changeExperienceToOutDTO(List<Experience> experiences){
-        List<ExperienceOutDTO> experienceOutDTOS = new ArrayList<>();
-        for (Experience experience : experiences) {
-            ExperienceOutDTO experienceOutDTO = new ExperienceOutDTO(experience.getTitle(),experience.getDescription(),experience.getCity(),experience.getStatus(),experience.getStartDate(),experience.getEndDate(),experience.getCreatedAt(),experience.getDifficulty());
-            experienceOutDTOS.add(experienceOutDTO);
-        }
-        return experienceOutDTOS;
-    }
+//    public List<ExperienceOutDTO> changeExperienceToOutDTO(List<Experience> experiences){
+//        List<ExperienceOutDTO> experienceOutDTOS = new ArrayList<>();
+//        for (Experience experience : experiences) {
+//            ExperienceOutDTO experienceOutDTO = new ExperienceOutDTO(experience.getTitle(),experience.getDescription(),experience.getCity(),experience.getStatus(),experience.getStartDate(),experience.getEndDate(),experience.getCreatedAt(),experience.getDifficulty());
+//            experienceOutDTOS.add(experienceOutDTO);
+//        }
+//        return experienceOutDTOS;
+//    }
 
 
     public List<ExperienceSearchOutDTO> searchExperienceByTitle(Integer organizerId,String title){

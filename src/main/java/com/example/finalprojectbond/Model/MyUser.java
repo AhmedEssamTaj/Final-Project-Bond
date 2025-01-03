@@ -18,55 +18,51 @@ public class MyUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Size(max = 25,message = "The length of the user name must be at most 25 characters")
-    @NotEmpty(message = "User Name cannot be null")
+//    @Size(max = 25,message = "The length of the user name must be at most 25 characters")
+//    @NotEmpty(message = "User Name cannot be null")
     @Column(columnDefinition = "varchar(25) not null unique")
     private String username;
 
-    @Size(max = 25,message = "The length of the password must be at most 25 characters")
-    @NotEmpty(message = "Password cannot be null")
-    @Pattern(regexp = "^(?=.?[A-Z])(?=.?[a-z])(?=.?[0-9])(?=.?[#?!@$%^&*-]).{8,}$",message = "The password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character (e.g., #?!@$%^&*-)")
-    @Column(columnDefinition = "varchar(25) not null")
+    @Column(columnDefinition = "varchar(50) not null")
+    private String name;
+//    @Size(max = 25,message = "The length of the password must be at most 25 characters")
+//    @NotEmpty(message = "Password cannot be null")
+    @Column(columnDefinition = "varchar(25) not null unique")
     private String password;
 
-    @Size(max = 30,message = "The length of the user name must be at most 30 characters")
-    @NotEmpty(message = "Name cannot be null")
-    @Column(columnDefinition = "varchar(30) not null")
-    private String name;
-
-    @Positive(message = "Age cannot be null ")
-    @Min(value = 18, message = "Age must be at least 18 ")
-    @Max(value = 100, message = "Age cannot be more than 100 ")
+//    @Positive(message = "Age cannot be null ")
+//    @Min(value = 18, message = "Age must be at least 18 ")
+//    @Max(value = 100, message = "Age cannot be more than 100 ")
     @Column(columnDefinition = "int not null")
     private Integer age;
 
-    @Size(max = 30,message = "The length of the city must be at most 30 characters")
-    @NotEmpty(message = "City cannot be null")
+//    @Size(max = 30,message = "The length of the city must be at most 30 characters")
+//    @NotEmpty(message = "City cannot be null")
     @Column(columnDefinition = "varchar(30) not null")
     private String city;
 
-    @Size(max = 70,message = "The length of the health status must be at most 70 characters")
-    @NotEmpty(message = "health status cannot be null")
+//    @Size(max = 70,message = "The length of the health status must be at most 70 characters")
+//    @NotEmpty(message = "health status cannot be null")
     @Column(columnDefinition = "varchar(70) not null")
     private String healthStatus;
-
-    @Size(max = 40,message = "The length of the city must be at most 40 characters")
-    @NotEmpty(message = "City cannot be null")
-    @Email(message = "Invalid email format")
+//
+//    @Size(max = 40,message = "The length of the city must be at most 40 characters")
+//    @NotEmpty(message = "City cannot be null")
+//    @Email(message = "Invalid email format")
     @Column(columnDefinition = "varchar(40) not null unique")
     private String email;
 
-    @NotEmpty(message = "Gender cannot be empty")
-    @Pattern(regexp = "^(Male|Female)$", message = "Gender must be either Male or Female")
+//    @NotEmpty(message = "Gender cannot be empty")
+//    @Pattern(regexp = "^(Male|Female)$", message = "Gender must be either Male or Female")
     @Column(columnDefinition = "varchar(6) not null")
     private String gender;
 
-    @Size(max = 15, message = "Role must be at most 15 characters")
+//    @Size(max = 15, message = "Role must be at most 15 characters")
     @Column
     private String role;
 
-    @NotEmpty(message = "Phone number cannot be null")
-    @Pattern(regexp = "^05[0-9]{8}$", message = "Phone number must start with 05 and be 10 digits")
+//    @NotEmpty(message = "Phone number cannot be null")
+//    @Pattern(regexp = "^05[0-9]{8}$", message = "Phone number must start with 05 and be 10 digits")
     @Column(columnDefinition = "varchar(10) not null unique")
     private String phoneNumber;
 
@@ -74,11 +70,10 @@ public class MyUser {
     @Column()
     private String photoURL;
 
-    @Positive(message = "Rating cannot be null ")
-    @Min(value = 1, message = "Rating must be at least 1 ")
-    @Max(value = 5, message = "Rating cannot be more than 5 ")
-    @Column(columnDefinition = "int not null")
-    private Integer rating;
+    @Column(columnDefinition = "double")
+    private double rating;
+
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
