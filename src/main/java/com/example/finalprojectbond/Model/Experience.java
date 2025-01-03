@@ -22,44 +22,34 @@ public class Experience {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
-    @Size(max = 50, message = "Title must be at most 50 characters")
-    @NotEmpty(message = "Title cannot be empty")
     @Column(columnDefinition = "varchar(50) not null")
     private String title;
 
-    @Size(max = 500, message = "Description must be at most 500 characters")
-    @NotEmpty(message = "Description cannot be empty")
-    @Column(columnDefinition = "varchar(500) not null")
+    @Column(columnDefinition = "varchar(255) not null")
     private String description;
 
-    @Size(max = 30, message = "City must not exceed 30 characters")
-    @NotEmpty(message = "City cannot be empty")
     @Column(columnDefinition = "varchar(30) not null")
     private String city;
 
-    @Size(max = 20, message = "Status must be at most 20 characters")
     @NotEmpty(message = "Status cannot be empty")
-    @Column(columnDefinition = "varchar(20) not null")
-    private String status;
+    @Column(columnDefinition = "varchar(255) not null")
+    @Pattern(regexp = "^(Accept Application|Fully Booked|Confirming|Task Assignment|In Progress|Active|Completed|Canceled)$")
+    private String status = "Accept Application";
 
-    @NotNull(message = "Start date cannot be null")
-    @FutureOrPresent(message = "Start date must be today or in the future")
     @Column(columnDefinition = "date not null")
     private LocalDate startDate;
 
-    @NotNull(message = "End date cannot be null")
-    @Future(message = "End date must be in the future")
     @Column(columnDefinition = "date not null")
     private LocalDate endDate;
 
     @Column(columnDefinition = "date DEFAULT CURRENT_DATE")
     private LocalDate createdAt = LocalDate.now();
 
-    @Size(max = 15, message = "Difficulty must not exceed 15 characters")
-    @NotEmpty(message = "Difficulty cannot be empty")
     @Column(columnDefinition = "varchar(15) not null")
     private String difficulty;
+
+    @Column(columnDefinition = "varchar(6) not null")
+    private String audienceType;
 
     @ManyToOne
     @JsonIgnore
