@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Setter
@@ -31,8 +31,9 @@ public class ReviewExplorer {
     @Column(columnDefinition = "int not null")
     private Integer rating;
 
-    @Column(columnDefinition = "Date DEFAULT CURRENT_DATE")
-    private LocalDate creationDate=LocalDate.now();
+    @Column
+    private LocalDateTime createdAt = LocalDateTime.now();
+
 
     @ManyToOne
     @JsonIgnore
