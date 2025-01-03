@@ -5,10 +5,7 @@ import com.example.finalprojectbond.InDTO.TaskInDTO;
 import com.example.finalprojectbond.Model.*;
 import com.example.finalprojectbond.OutDTO.ExplorerOutDTO;
 import com.example.finalprojectbond.OutDTO.TaskOutDTO;
-import com.example.finalprojectbond.Repository.AuthRepository;
-import com.example.finalprojectbond.Repository.ExplorerRepository;
-import com.example.finalprojectbond.Repository.OrganizerRepository;
-import com.example.finalprojectbond.Repository.TaskRepository;
+import com.example.finalprojectbond.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +18,9 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final AuthRepository authRepository;
-    private final ExplorerRepository explorerRepository;
     private final OrganizerRepository organizerRepository;
+    private final ExplorerRepository explorerRepository;
+
 
     public List<Task> getAllTasks(Integer authId) {
         MyUser auth = authRepository.findMyUserById(authId);
@@ -188,31 +186,27 @@ public class TaskService {
         return progressList;
     }
 
-    //4
-    public List<TaskOutDTO> viewAllTasksForExplorer(Integer organizerId, Integer explorerId) {
-        Organizer organizer = organizerRepository.findOrganizerById(organizerId);
-        if (organizer == null || !organizer.getMyUser().getRole().equals("ORGANIZER")) {
-            throw new ApiException("You don't have permission to view tasks");
-        }
-
+    // Endpoint 28: Get all "Incomplete" tasks for an explorer
+    public List<Task> getIncompleteTasksForExplorer(Integer explorerId) {
         Explorer explorer = explorerRepository.findExplorerById(explorerId);
         if (explorer == null) {
-            throw new ApiException("Explorer was not found");
+            throw new ApiException("Explorer not found");
         }
-
-        List<Task> tasks = taskRepository.findTasksByExplorer(explorer);
-        if (tasks.isEmpty()) {
-            throw new ApiException("This Explorer has no tasks");
-        }
-
-        List<TaskOutDTO> taskDTOs = new ArrayList<>();
-        for (Task task : tasks) {
-
-            TaskOutDTO taskDTO = new TaskOutDTO(task.getTitle(), task.getDescription(), task.getStatus());
-            taskDTOs.add(taskDTO);
-        }
-        return taskDTOs;
+        return taskRepository.findByExplorerAndStatus(explorer, "Incomplete");
     }
+
+    // Endpoint 30: Change the status of a task to "Completed"
+    public void changeTaskStatusToCompleted(Integer taskId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new ApiException("Task not found"));
+        if ("Completed".equals(task.getStatus())) {
+            throw new ApiException("Task is already completed");
+        }
+        task.setStatus("Completed");
+        taskRepository.save(task);
+    }
+
+
 
 
 }

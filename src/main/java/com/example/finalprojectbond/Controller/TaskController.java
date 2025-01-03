@@ -6,6 +6,7 @@ import com.example.finalprojectbond.Model.Task;
 import com.example.finalprojectbond.OutDTO.ExplorerOutDTO;
 import com.example.finalprojectbond.OutDTO.TaskOutDTO;
 import com.example.finalprojectbond.Service.TaskService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,53 +23,69 @@ public class TaskController {
 
     private final TaskService taskService;
 
-
-    @GetMapping("/all/{authId}")
+    //12
+    @GetMapping("/getAll/{authId}")
     public ResponseEntity getAllTasks(@PathVariable Integer authId) {
-        List<Task> tasks = taskService.getAllTasks(authId);
-        return ResponseEntity.status(HttpStatus.OK).body( "Tasks retrieved successfully");
+        return ResponseEntity.status(200).body(taskService.getAllTasks(authId));
     }
 
-    @GetMapping("/explorer/{explorerId}")
+    //13
+    @GetMapping("/getByExplorer/{explorerId}")
     public ResponseEntity getTasksByExplorer(@PathVariable Integer explorerId) {
-        List<TaskOutDTO> tasks = taskService.getTasksByExplorer(explorerId);
-        return ResponseEntity.status(HttpStatus.OK).body( "Tasks retrieved successfully");
+        return ResponseEntity.status(200).body(taskService.getTasksByExplorer(explorerId));
     }
 
-    @PostMapping("/create/{organizerId}/{explorerId}")
-    public ResponseEntity createTask(@PathVariable Integer organizerId, @PathVariable Integer explorerId, @RequestBody @Validated Task task) {
-
+    //7
+    @PostMapping("/add/{organizerId}/{explorerId}")
+    public ResponseEntity createTask(@PathVariable Integer organizerId,
+                                             @PathVariable Integer explorerId,
+                                             @RequestBody @Valid Task task) {
         taskService.createTask(organizerId, explorerId, task);
-        return ResponseEntity.status(HttpStatus.OK).body("Task created successfully");
+        return ResponseEntity.status(200).body("Task created successfully");
     }
 
     @PutMapping("/update/{organizerId}/{explorerId}/{taskId}")
-    public ResponseEntity updateTask(@PathVariable Integer organizerId, @PathVariable Integer explorerId, @PathVariable Integer taskId, @RequestBody @Validated TaskInDTO taskDTO) {
+    public ResponseEntity updateTask(@PathVariable Integer organizerId,
+                                             @PathVariable Integer explorerId,
+                                             @PathVariable Integer taskId,
+                                             @RequestBody @Valid TaskInDTO taskDTO) {
         taskService.updateTask(organizerId, explorerId, taskId, taskDTO);
-        return ResponseEntity.status(HttpStatus.OK).body("Task updated successfully");
+        return ResponseEntity.status(200).body("Task updated successfully");
     }
 
     @DeleteMapping("/delete/{organizerId}/{explorerId}/{taskId}")
-    public ResponseEntity deleteTask(@PathVariable Integer organizerId, @PathVariable Integer explorerId, @PathVariable Integer taskId) {
+    public ResponseEntity deleteTask(@PathVariable Integer organizerId,
+                                             @PathVariable Integer explorerId,
+                                             @PathVariable Integer taskId) {
         taskService.deleteTask(organizerId, explorerId, taskId);
-        return ResponseEntity.status(HttpStatus.OK).body("Task deleted successfully");
+        return ResponseEntity.status(200).body("Task deleted successfully");
     }
 
-    @PutMapping("/change-status/{organizerId}/{taskId}")
-    public ResponseEntity changeTaskStatus(@PathVariable Integer organizerId, @PathVariable Integer taskId, @RequestParam String status) {
+    //8
+    @PutMapping("/changeStatus/{organizerId}/{taskId}/{status}")
+    public ResponseEntity changeTaskStatus(@PathVariable Integer organizerId,
+                                                   @PathVariable Integer taskId,
+                                                   @PathVariable String status) {
         taskService.changeTaskStatus(organizerId, taskId, status);
-        return ResponseEntity.status(HttpStatus.OK).body("Task status changed successfully");
+        return ResponseEntity.status(200).body("Task status updated successfully");
     }
 
-    @GetMapping("/progress/{organizerId}")
+    //9
+    @GetMapping("/viewTaskProgress/{organizerId}")
     public ResponseEntity viewTaskProgressForAllExplorers(@PathVariable Integer organizerId) {
-        List<ExplorerOutDTO> progressList = taskService.viewTaskProgressForAllExplorers(organizerId);
-        return ResponseEntity.status(HttpStatus.OK).body("Task progress retrieved successfully");
+        return ResponseEntity.status(200).body(taskService.viewTaskProgressForAllExplorers(organizerId));
     }
 
-    @GetMapping("/explorer-tasks/{organizerId}/{explorerId}")
-    public ResponseEntity viewAllTasksForExplorer(@PathVariable Integer organizerId, @PathVariable Integer explorerId) {
-        List<TaskOutDTO> tasks = taskService.viewAllTasksForExplorer(organizerId, explorerId);
-        return ResponseEntity.status(HttpStatus.OK).body("Tasks retrieved successfully");
+    //10
+    @GetMapping("/getIncompleteTasks/{explorerId}")
+    public ResponseEntity getIncompleteTasksForExplorer(@PathVariable Integer explorerId) {
+        return ResponseEntity.status(200).body(taskService.getIncompleteTasksForExplorer(explorerId));
+    }
+
+    //11
+    @PutMapping("/markCompleted/{taskId}")
+    public ResponseEntity<String> changeTaskStatusToCompleted(@PathVariable Integer taskId) {
+        taskService.changeTaskStatusToCompleted(taskId);
+        return ResponseEntity.status(200).body("Task marked as completed");
     }
 }

@@ -14,4 +14,6 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     List<Task> findTasksByExplorer(Explorer explorer);
 
     Task findTaskByIdAndExplorer(Integer taskId, Explorer explorer);
+
+    List<Task> findByExplorerAndStatus(Explorer explorer, String incomplete);
 }

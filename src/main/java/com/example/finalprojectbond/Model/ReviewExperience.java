@@ -7,6 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.br.CNPJ;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Setter
@@ -29,7 +33,11 @@ public class ReviewExperience {
     @Column(columnDefinition = "int not null")
     private Integer rating;
 
+    @Column
+    private LocalDateTime createdAt = LocalDateTime.now();
+
     @ManyToOne
     @JsonIgnore
     private Experience experience;
+
 }
