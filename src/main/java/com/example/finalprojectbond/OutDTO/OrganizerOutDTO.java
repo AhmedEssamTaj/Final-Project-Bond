@@ -21,6 +21,8 @@ import java.util.Set;
 public class OrganizerOutDTO {
     private String username;
 
+    private String name;
+
     private Integer age;
 
     private String city;
@@ -44,5 +46,7 @@ public class OrganizerOutDTO {
     private String licenseSerialNumber;
 
     private Integer rating;
+
+    private Boolean isApproved;
 
 }

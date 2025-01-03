@@ -3,10 +3,12 @@ package com.example.finalprojectbond.Service;
 import com.example.finalprojectbond.Api.ApiException;
 import com.example.finalprojectbond.InDTO.MeetingZoneInDTO;
 import com.example.finalprojectbond.Model.Experience;
+import com.example.finalprojectbond.Model.Explorer;
 import com.example.finalprojectbond.Model.MeetingZone;
 import com.example.finalprojectbond.Model.Organizer;
 import com.example.finalprojectbond.OutDTO.MeetingZoneOutDTO;
 import com.example.finalprojectbond.Repository.ExperienceRepository;
+import com.example.finalprojectbond.Repository.ExplorerRepository;
 import com.example.finalprojectbond.Repository.MeetingZoneRepository;
 import com.example.finalprojectbond.Repository.OrganizerRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ public class MeetingZoneService {
     private final MeetingZoneRepository meetingZoneRepository;
     private final OrganizerRepository organizerRepository;
     private final ExperienceRepository experienceRepository;
+    private final ExplorerRepository explorerRepository;
 
     public MeetingZoneOutDTO getMeetingZone(Integer organizerId,Integer experienceId){
         Organizer organizer = organizerRepository.findOrganizerById(organizerId);
@@ -43,7 +46,11 @@ public class MeetingZoneService {
             throw new ApiException("Organizer not found");
         }
         if (experience.getOrganizer().getId() == organizer.getId()) {
-            meetingZoneRepository.save(meetingZone);
+            if (experience.getStatus().equalsIgnoreCase("Fully Booked")) {
+                meetingZoneRepository.save(meetingZone);
+            }else {
+                throw new ApiException("Experience status is not Fully Booked");
+            }
         }else {
             throw new ApiException("Organizer does not have this experience");
         }
@@ -63,10 +70,14 @@ public class MeetingZoneService {
             throw new ApiException("MeetingZone not found");
         }
         if (experience.getOrganizer().getId() == organizer.getId()) {
-            meetingZone1.setLatitude(meetingZoneInDTO.getLatitude());
-            meetingZone1.setLongitude(meetingZoneInDTO.getLongitude());
-            meetingZone1.setLandMark(meetingZoneInDTO.getLandMark());
-            meetingZoneRepository.save(meetingZone1);
+            if (experience.getStatus().equalsIgnoreCase("Fully Booked")) {
+                meetingZone1.setLatitude(meetingZoneInDTO.getLatitude());
+                meetingZone1.setLongitude(meetingZoneInDTO.getLongitude());
+                meetingZone1.setLandMark(meetingZoneInDTO.getLandMark());
+                meetingZoneRepository.save(meetingZone1);
+            }else {
+                throw new ApiException("Experience status is not Fully Booked");
+            }
         }else {
             throw new ApiException("Organizer does not have this experience");
         }
@@ -91,5 +102,24 @@ public class MeetingZoneService {
         }else {
             throw new ApiException("Organizer does not have this experience");
         }
+    }
+
+    public MeetingZoneOutDTO getMeetingZoneForExplorerExperience(Integer explorerId,Integer experienceId){
+        Explorer explorer = explorerRepository.findExplorerById(explorerId);
+        MeetingZone meetingZone = meetingZoneRepository.findMeetingZoneByExperienceId(experienceId);
+        Experience experience = experienceRepository.findExperienceById(experienceId);
+        if (explorer == null) {
+            throw new ApiException("Explorer not found");
+        }
+        if (meetingZone == null) {
+            throw new ApiException("Meeting Zone not found");
+        }
+        if (explorer.getExperiences().contains(experience)) {
+            MeetingZoneOutDTO meetingZoneOutDTO = new MeetingZoneOutDTO(meetingZone.getLatitude(),meetingZone.getLongitude(),meetingZone.getLandMark());
+            return meetingZoneOutDTO;
+        }else {
+            throw new ApiException("Explorer does not have this experience");
+        }
+
     }
 }

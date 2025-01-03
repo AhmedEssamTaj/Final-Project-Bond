@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,7 +29,8 @@ public class Notification {
     @Column(nullable = false)
     private String notification_ToUser;
 
-    private LocalDateTime notification_createAt;
+    @Column()
+    private LocalDate notification_createAt = LocalDate.now();
 
     @ManyToOne
     @JsonIgnore

@@ -41,6 +41,7 @@ public class Experience {
     @Size(max = 20, message = "Status must be at most 20 characters")
     @NotEmpty(message = "Status cannot be empty")
     @Column(columnDefinition = "varchar(20) not null")
+    @Pattern(regexp = "^(Accept Application|Fully Booked|Confirming|Task Assignment|In Progress|Active|Completed|Canceled)$")
     private String status;
 
     @NotNull(message = "Start date cannot be null")
@@ -60,6 +61,10 @@ public class Experience {
     @NotEmpty(message = "Difficulty cannot be empty")
     @Column(columnDefinition = "varchar(15) not null")
     private String difficulty;
+
+    @Column(columnDefinition = "varchar(6) not null")
+    @Pattern(regexp = "^(MALE|FEMALE|FAMILY)$")
+    private String audienceType;
 
     @ManyToOne
     @JsonIgnore

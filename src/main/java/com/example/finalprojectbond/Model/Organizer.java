@@ -33,6 +33,9 @@ public class Organizer {
     @Column(columnDefinition = "varchar(20) not null")
     private String licenseSerialNumber;
 
+    @Column()
+    private Boolean isApproved = false;
+
     @OneToOne
     @MapsId
     @JsonIgnore

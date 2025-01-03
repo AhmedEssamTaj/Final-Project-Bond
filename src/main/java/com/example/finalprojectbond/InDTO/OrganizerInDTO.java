@@ -19,6 +19,11 @@ public class OrganizerInDTO {
     @Pattern(regexp = "^(?=.?[A-Z])(?=.?[a-z])(?=.?[0-9])(?=.?[#?!@$%^&*-]).{8,}$",message = "The password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character (e.g., #?!@$%^&*-)")
     private String password;
 
+    @Size(max = 30,message = "The length of the user name must be at most 30 characters")
+    @NotEmpty(message = "Name cannot be null")
+    @Column(columnDefinition = "varchar(30) not null")
+    private String name;
+
     @Positive(message = "Age cannot be null ")
     @Min(value = 18, message = "Age must be at least 18 ")
     @Max(value = 100, message = "Age cannot be more than 100 ")
